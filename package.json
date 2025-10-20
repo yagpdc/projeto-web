@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
+    "@tanstack/react-query-devtools": "^5.90.2",
+    "axios": "^1.12.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
