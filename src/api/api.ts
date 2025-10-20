@@ -5,7 +5,7 @@ const url = window.location.hostname.includes("localhost")
   : "https://yago-vm-web-test-ffhjembcd5h9eebv.brazilsouth-01.azurewebsites.net/";
 
 export const Api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: url,
   withCredentials: false,
 });
 
