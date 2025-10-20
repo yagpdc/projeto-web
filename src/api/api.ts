@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = window.location.hostname.includes("localhost")
-  ? "http://localhost:3000"
+  ? "http://localhost:8000"
   : "https://yago-vm-web-test-ffhjembcd5h9eebv.brazilsouth-01.azurewebsites.net";
 
 export const Api = axios.create({

@@ -17,8 +17,8 @@ export type CardType = (typeof CardTypes)[keyof typeof CardTypes];
 export type Card = {
   color?: string; // Apenas para cartas do tipo 'level'
   _id: string; // ID único da carta ( MONGODB)
-  numero: number;
-  tipo: CardType;
+  number: number;
+  type: CardType;
   createdAt: string;
 };
 
