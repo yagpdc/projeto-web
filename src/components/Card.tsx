@@ -23,11 +23,10 @@ const Card = ({ card }: { card: CardType }) => {
       className={`rounded-md p-4 shadow-md ${cardStyle(card.type)} flex h-52 w-40 flex-col items-center justify-center`}
     >
       <span className="text-3xl font-bold">
-        {card.type === "level" ? ` ${card.number}` : card.type.toUpperCase()}
+        {card.type === "level" ? ` ${card.number}` : card.type}
       </span>
     </div>
   );
 };
-
 
 export default Card;
