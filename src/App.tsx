@@ -1,10 +1,22 @@
 import React from "react";
 import { useDeck } from "./hooks/use-deck.hook";
-import Card from "./components/Card";
+import { Deck } from "./components/Deck";
+import { Slot } from "./components/Slot";
+import { CardProps } from "./api/services/game/game.api.types";
 
 function App() {
-  const { deck, start, isStarting, startError, pauseCards, setPauseCards } =
-    useDeck();
+  const {
+    deck,
+    start,
+    isStarting,
+    startError,
+    pauseCards,
+    setPauseCards,
+    handleCardDrop,
+    handleCardRemoved,
+    deckCards,
+    playedCards,
+  } = useDeck();
 
   return (
     <div className="flex h-screen flex-col items-center justify-start overflow-hidden p-8">
@@ -36,24 +48,21 @@ function App() {
         )}
 
         {deck && (
-          <div className="flex w-full max-w-5xl flex-col gap-3">
+          <div className="flex w-full flex-col gap-6">
             <div className="flex items-center justify-center gap-4 text-sm text-slate-600">
-              <span className="font-semibold">Total: {deck.totalCards}</span>
-              <span>Level: {deck.breakdown.level}</span>
-              <span>Reset: {deck.breakdown.reset}</span>
-              <span>Pause: {deck.breakdown.pause}</span>
+              <span className="font-semibold">
+                Total Inicial: {deck.totalCards}
+              </span>
+              <span>No Deck: {deckCards.length}</span>
+              <span>Jogadas: {playedCards.length}</span>
             </div>
 
-            <div className="h-[600px] w-full overflow-y-auto rounded-lg border border-slate-300 bg-slate-50 p-4">
-              <div className="grid grid-cols-4 gap-3">
-                {deck.cards.length > 0 ? (
-                  deck.cards.map((card) => <Card key={card._id} card={card} />)
-                ) : (
-                  <div className="col-span-4 text-center text-gray-500">
-                    Nenhuma carta disponível
-                  </div>
-                )}
-              </div>
+            <div className="flex items-start justify-center gap-8">
+              {/* Deck */}
+              <Deck cards={deckCards} onCardRemoved={handleCardRemoved} />
+
+              {/* Slot */}
+              <Slot playedCards={playedCards} onDrop={handleCardDrop} />
             </div>
           </div>
         )}

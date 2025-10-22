@@ -14,7 +14,7 @@ export const CardColors = {
 
 export type CardType = (typeof CardTypes)[keyof typeof CardTypes];
 
-export type Card = {
+export type CardProps = {
   color?: string; // Apenas para cartas do tipo 'level'
   _id: string; // ID único da carta ( MONGODB)
   number: number;
@@ -35,5 +35,5 @@ export type DeckResponse = {
     reset: number;
     pause: number;
   };
-  cards: Card[];
+  cards: CardProps[];
 };
