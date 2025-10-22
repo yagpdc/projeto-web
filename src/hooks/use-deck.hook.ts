@@ -31,7 +31,7 @@ export function useDeck() {
     if (deck?.cards) {
       setDeckCards(deck.cards);
     }
-  }, [deck]);
+  }, [deck]); 
 
   const handleCardDrop = (card: CardProps) => {
     console.log("Card dropped:", card);

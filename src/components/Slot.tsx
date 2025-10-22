@@ -26,7 +26,8 @@ export const Slot = ({ playedCards, onDrop }: SlotProps) => {
     const cardData = e.dataTransfer.getData("card");
     if (cardData) {
       const card = JSON.parse(cardData);
-      onDrop(card);
+
+      if (!playedCards.find((c) => c._id === card._id)) onDrop(card);
     }
   };
 
@@ -66,7 +67,6 @@ export const Slot = ({ playedCards, onDrop }: SlotProps) => {
         )}
       </div>
 
-      {/* Info */}
       <div className="rounded-lg bg-slate-100 p-3 text-sm">
         <div className="font-semibold text-slate-700">Total jogadas:</div>
         <div className="text-slate-600">{playedCards.length} cartas</div>
