@@ -5,6 +5,8 @@ export const CardTypes = {
   PAUSE: "pause",
 } as const;
 
+export type DropPayload = { index: number; card: CardProps };
+
 export const CardColors = {
   RED: "red",
   BLUE: "blue",
@@ -15,11 +17,22 @@ export const CardColors = {
 export type CardType = (typeof CardTypes)[keyof typeof CardTypes];
 
 export type CardProps = {
-  color?: string; // Apenas para cartas do tipo 'level'
-  _id: string; // ID único da carta ( MONGODB)
+  _id: string;
+  id: number;
   number: number;
   type: CardType;
+  color?: string;
+};
+
+export type DeckData = {
+  _id: string;
   createdAt: string;
+  updatedAt: string;
+  status: string;
+  pauseCards: number;
+  currentCardIndex: number;
+  drawnCards: CardProps[];
+  cards: CardProps[];
 };
 
 export type StartGameRequest = {
@@ -35,5 +48,5 @@ export type DeckResponse = {
     reset: number;
     pause: number;
   };
-  cards: CardProps[];
+  deck: DeckData;
 };

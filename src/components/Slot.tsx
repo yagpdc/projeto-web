@@ -1,3 +1,4 @@
+// src/components/Slot.tsx
 import React from "react";
 import { CardProps } from "../api/services/game/game.api.types";
 import Card from "./Card";
@@ -5,72 +6,57 @@ import Card from "./Card";
 interface SlotProps {
   playedCards: CardProps[];
   onDrop: (card: CardProps) => void;
+  allowReplace?: boolean;
 }
 
-export const Slot = ({ playedCards, onDrop }: SlotProps) => {
-  const [isDraggingOver, setIsDraggingOver] = React.useState(false);
+export const Slot = ({
+  playedCards,
+  onDrop,
+  allowReplace = false,
+}: SlotProps) => {
+  const [over, setOver] = React.useState(false);
+  const card = playedCards[0] ?? null;
+  const canAccept = !card || allowReplace;
+
+  const handleDragEnter = () => {
+    if (canAccept) setOver(true);
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (!canAccept) return;
     e.preventDefault();
-    setIsDraggingOver(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDraggingOver(false);
-  };
+  const handleDragLeave = () => setOver(false);
 
   const handleDrop = (e: React.DragEvent) => {
+    if (!canAccept) return;
     e.preventDefault();
-    setIsDraggingOver(false);
-
-    const cardData = e.dataTransfer.getData("card");
-    if (cardData) {
-      const card = JSON.parse(cardData);
-
-      if (!playedCards.find((c) => c._id === card._id)) onDrop(card);
-    }
+    setOver(false);
+    const raw = e.dataTransfer.getData("card");
+    if (!raw) return;
+    onDrop(JSON.parse(raw) as CardProps);
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h3 className="text-xl font-semibold text-slate-700">Cartas Jogadas</h3>
-
-      {/* Drop Zone */}
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        className={`relative min-h-64 w-48 rounded-lg border-4 border-dashed p-4 transition-all ${
-          isDraggingOver
-            ? "scale-105 border-blue-500 bg-blue-50"
-            : "border-slate-300 bg-slate-50"
-        }`}
-      >
-        {playedCards.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-center text-slate-400"></div>
-        ) : (
-          <div className="relative h-52 w-40">
-            {playedCards.map((card, index) => (
-              <div
-                key={`${card._id}-${index}`}
-                className="absolute"
-                style={{
-                  top: `0`,
-                  left: `${index * 2}px`,
-                  zIndex: index,
-                }}
-              >
-                <Card card={card} />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="rounded-lg bg-slate-100 p-3 text-sm">
-        <div className="font-semibold text-slate-700">Total jogadas:</div>
-        <div className="text-slate-600">{playedCards.length} cartas</div>
-      </div>
+    <div
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className={[
+        "relative",
+        "box-border",
+        "h-28 w-20",
+        "flex items-center justify-center",
+        over
+          ? "rounded-md border-dashed bg-transparent outline outline-2 outline-blue-500"
+          : "bg-transparent",
+      ].join(" ")}
+    >
+      {card ? <Card card={card} /> : null}
     </div>
   );
 };
+
+export default Slot;

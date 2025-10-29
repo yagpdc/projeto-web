@@ -36,9 +36,7 @@ export const Deck = ({ cards: initialCards, onCardRemoved }: DeckProps) => {
 
   if (cards.length === 0) {
     return (
-      <div className="flex h-52 w-40 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400">
-        Deck vazio
-      </div>
+      <div className="flex h-28 w-20 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-slate-400"></div>
     );
   }
 
@@ -64,29 +62,6 @@ export const Deck = ({ cards: initialCards, onCardRemoved }: DeckProps) => {
             />
           </div>
         ))}
-      </div>
-
-      <div className="flex flex-col gap-2 text-sm">
-        <div className="rounded bg-slate-100 p-3">
-          <div className="font-semibold text-slate-700">Carta Atual:</div>
-          <div className="text-slate-600">
-            {currentCard.type === "level"
-              ? `Nível ${currentCard.number}`
-              : currentCard.type.toUpperCase()}
-          </div>
-          {currentCard.color && (
-            <div className="text-xs text-slate-500">
-              Cor: {currentCard.color}
-            </div>
-          )}
-        </div>
-
-        <div className="rounded bg-slate-100 p-3">
-          <div className="text-slate-600">
-            Posição: {cardPosition} / {cards.length}
-          </div>
-          <div className="text-slate-600">Restantes: {cards.length}</div>
-        </div>
       </div>
     </div>
   );

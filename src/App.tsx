@@ -1,8 +1,8 @@
+// App.tsx
 import React from "react";
 import { useDeck } from "./hooks/use-deck.hook";
 import { Deck } from "./components/Deck";
 import { Slot } from "./components/Slot";
-import { CardProps } from "./api/services/game/game.api.types";
 
 function App() {
   const {
@@ -17,12 +17,13 @@ function App() {
     deckCards,
     playedCards,
   } = useDeck();
+  const total = deck?.totalCards || 0; // 50–53
+  const rows = 5;
+  const cols = Math.ceil(total / rows);
 
   return (
     <div className="flex h-screen flex-col items-center justify-start overflow-hidden p-8">
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-4xl font-bold text-slate-900">Game</h1>
-
+      <div className="flex w-full flex-col items-center gap-6 p-4">
         <div className="flex items-center gap-2">
           <button
             disabled={isStarting}
@@ -48,21 +49,24 @@ function App() {
         )}
 
         {deck && (
-          <div className="flex w-full flex-col gap-6">
-            <div className="flex items-center justify-center gap-4 text-sm text-slate-600">
-              <span className="font-semibold">
-                Total Inicial: {deck.totalCards}
-              </span>
-              <span>No Deck: {deckCards.length}</span>
-              <span>Jogadas: {playedCards.length}</span>
-            </div>
-
-            <div className="flex items-start justify-center gap-8">
-              {/* Deck */}
+          <div className="bg-repeatdebug flex w-full flex-col gap-6 rounded-md border-4 border-rose-950 bg-[url('/wood_table_top.png')] bg-cover bg-center p-4">
+            <div className="flex items-start justify-start gap-8">
               <Deck cards={deckCards} onCardRemoved={handleCardRemoved} />
-
-              {/* Slot */}
-              <Slot playedCards={playedCards} onDrop={handleCardDrop} />
+              <div
+                className="grid grid-flow-col grid-rows-5 gap-3"
+                style={{
+                  gridTemplateColumns: `repeat(${cols}, minmax(96px, 1fr))`,
+                }}
+              >
+                {Array.from({ length: total }).map((_, i) => (
+                  <Slot
+                    key={i}
+                    playedCards={playedCards[i] ? [playedCards[i]] : []}
+                    onDrop={(card) => handleCardDrop({ index: i, card })}
+                    allowReplace
+                  />
+                ))}
+              </div>
             </div>
           </div>
         )}
